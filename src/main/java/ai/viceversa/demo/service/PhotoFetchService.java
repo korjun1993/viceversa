@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PhotoGalleryFetchService {
+public class PhotoFetchService {
 	private final PhotoGalleryHttpApiClient photoGalleryHttpApiClient;
 	private final ObjectMapper objectMapper;
 
