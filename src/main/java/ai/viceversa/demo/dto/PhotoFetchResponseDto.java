@@ -1,10 +1,13 @@
 package ai.viceversa.demo.dto;
 
-public record PhotoGalleryFetchResponseDto(
-	String galContentId,
-	String galContentTypeId,
+import lombok.Builder;
+
+@Builder
+public record PhotoFetchResponseDto(
+	Long galContentId,
+	Long galContentTypeId,
 	String galTitle,
-	String webImageUrl,
+	String galWebImageUrl,
 	String galCreatedtime,
 	String galModifiedtime,
 	String galPhotographyMonth,
