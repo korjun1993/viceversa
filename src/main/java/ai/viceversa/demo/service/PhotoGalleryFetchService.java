@@ -11,16 +11,23 @@ import ai.viceversa.demo.api.PhotoGalleryHttpApiClient;
 import ai.viceversa.demo.dto.PhotoGalleryFetchResponseDto;
 import ai.viceversa.demo.extension.ResponseUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PhotoGalleryFetchService {
 	private final PhotoGalleryHttpApiClient photoGalleryHttpApiClient;
 	private final ObjectMapper objectMapper;
 
-	public List<PhotoGalleryFetchResponseDto> fetch(int numOfRows, int pageNo) throws JsonProcessingException {
+	public List<PhotoGalleryFetchResponseDto> fetch(int numOfRows, int pageNo) {
 		String body = ResponseUtils.body(photoGalleryHttpApiClient.getPhotoList(numOfRows, pageNo));
-		return objectMapper.readValue(body,
-			objectMapper.getTypeFactory().constructCollectionType(List.class, PhotoGalleryFetchResponseDto.class));
+		try {
+			return objectMapper.readValue(body,
+				objectMapper.getTypeFactory().constructCollectionType(List.class, PhotoGalleryFetchResponseDto.class));
+		} catch (JsonProcessingException e) {
+			log.error("Open API 데이터(JSON) → 파싱 오류 발생 = {}", body, e);
+			throw new RuntimeException(e);
+		}
 	}
 }
