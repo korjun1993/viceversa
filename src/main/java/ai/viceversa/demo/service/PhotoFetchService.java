@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ai.viceversa.demo.api.PhotoGalleryHttpApiClient;
+import ai.viceversa.demo.api.OpenApiClient;
 import ai.viceversa.demo.dto.PhotoFetchResponseDto;
 import ai.viceversa.demo.extension.ResponseUtils;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 public class PhotoFetchService {
-	private final PhotoGalleryHttpApiClient photoGalleryHttpApiClient;
+	private final OpenApiClient openApiClient;
 	private final ObjectMapper objectMapper;
 
 	public List<PhotoFetchResponseDto> fetch(int numOfRows, int pageNo) {
-		String body = ResponseUtils.body(photoGalleryHttpApiClient.getPhotoList(numOfRows, pageNo));
+		String body = ResponseUtils.body(openApiClient.getPhotoList(numOfRows, pageNo));
 		try {
 			return objectMapper.readValue(body,
 				objectMapper.getTypeFactory().constructCollectionType(List.class, PhotoFetchResponseDto.class));

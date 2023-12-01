@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ai.viceversa.demo.api.PhotoGalleryHttpApiClient;
+import ai.viceversa.demo.api.OpenApiClient;
 
 @SpringBootTest
-class PhotoGalleryHttpApiClientTest {
+class OpenApiClientTest {
 
 	@Autowired
-	private PhotoGalleryHttpApiClient sut;
+	private OpenApiClient sut;
 
 	@Test
 	@DisplayName("공공 API를 통해 사진 목록을 조회할 수 있다")
