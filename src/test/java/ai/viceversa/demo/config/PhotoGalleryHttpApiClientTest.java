@@ -15,9 +15,16 @@ class PhotoGalleryHttpApiClientTest {
 	private PhotoGalleryHttpApiClient sut;
 
 	@Test
-	@DisplayName("")
+	@DisplayName("공공 API를 통해 사진 목록을 조회할 수 있다")
 	void test1() {
 		String actual = sut.getPhotoList(10, 1);
+		Assertions.assertThat(actual.contains("\"resultMsg\":\"OK\"")).isTrue();
+	}
+
+	@Test
+	@DisplayName("공공 API를 통해 제목이 일치하는 사진들을 조회할 수 있다")
+	void test2() {
+		String actual = sut.getPhotoDetail("이태원거리", 10, 1);
 		Assertions.assertThat(actual.contains("\"resultMsg\":\"OK\"")).isTrue();
 	}
 }
