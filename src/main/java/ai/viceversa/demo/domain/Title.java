@@ -3,7 +3,6 @@ package ai.viceversa.demo.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,17 +22,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SequenceGenerator(
-	name = "PHOTO_TYPE_SEQ_GENERATOR",
-	sequenceName = "PHOTO_TYPE_SEQ"
+	name = "TITLE_SEQ_GENERATOR",
+	sequenceName = "TITLE_SEQ"
 )
-public class PhotoType {
+public class Title {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 
-	private Long contentTypeId;
-
 	@Default
-	@OneToMany(mappedBy = "photoType", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "title")
 	private List<Photo> photos = new ArrayList<>();
+
+	private String name;
 }

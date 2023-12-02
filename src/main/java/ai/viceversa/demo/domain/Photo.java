@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,9 +26,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SequenceGenerator(
+	name = "PHOTO_SEQ_GENERATOR",
+	sequenceName = "PHOTO_SEQ"
+)
 public class Photo {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 
 	private Long contentId;
@@ -40,7 +45,9 @@ public class Photo {
 	@OneToMany(mappedBy = "photo", cascade = CascadeType.PERSIST)
 	private List<PhotoSearchKeyword> searchKeywords = new ArrayList<>();
 
-	private String title;
+	@ManyToOne
+	@JoinColumn(name = "title_id")
+	private Title title;
 
 	private String imageUrl;
 
@@ -62,6 +69,14 @@ public class Photo {
 		}
 		photoType.getPhotos().add(this);
 		this.photoType = photoType;
+	}
+
+	public void setTitle(Title title) {
+		if (this.title != null) {
+			this.title.getPhotos().remove(this);
+		}
+		title.getPhotos().add(this);
+		this.title = title;
 	}
 
 	//== 연관관계 편의메서드 ==//
