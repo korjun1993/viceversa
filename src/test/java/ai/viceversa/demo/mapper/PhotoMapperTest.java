@@ -41,7 +41,7 @@ class PhotoMapperTest {
 				.isEqualTo("http://tong.visitkorea.or.kr/cms2/website/09/3047209.jpg");
 			softAssertions.assertThat(actual.getCreatedTime()).isEqualTo(LocalDateTime.of(2023, 11, 23, 14, 58, 48));
 			softAssertions.assertThat(actual.getModifiedTime()).isEqualTo(LocalDateTime.of(2023, 11, 30, 23, 38, 11));
-			softAssertions.assertThat(actual.getMonth()).isEqualTo(YearMonth.of(2023, 10));
+			softAssertions.assertThat(actual.getYearMonth()).isEqualTo(YearMonth.of(2023, 10));
 			softAssertions.assertThat(actual.getLocation()).isEqualTo("대구광역시 중구 계산동2가");
 			softAssertions.assertThat(actual.getPhotographer()).isEqualTo("김효서");
 			softAssertions.assertThat(actual.getSearchKeywords().get(0).getSearchKeyword().getId()).isEqualTo("서상돈 고택");

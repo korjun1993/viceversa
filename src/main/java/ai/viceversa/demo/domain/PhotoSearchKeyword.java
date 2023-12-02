@@ -1,8 +1,10 @@
 package ai.viceversa.demo.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
@@ -13,16 +15,25 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @AllArgsConstructor
-@IdClass(PhotoSearchKeywordId.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PhotoSearchKeyword {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
 	@ManyToOne
 	@JoinColumn(name = "photo_id")
 	private Photo photo;
 
-	@Id
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "search_keyword_id")
 	private SearchKeyword searchKeyword;
+
+	public void setPhoto(Photo photo) {
+		this.photo = photo;
+	}
+
+	public void setSearchKeyword(SearchKeyword searchKeyword) {
+		this.searchKeyword = searchKeyword;
+	}
 }

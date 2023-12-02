@@ -24,12 +24,12 @@ public class PhotoMapper {
 
 	private static Photo buildPhoto(PhotoFetchResponseDto dto) {
 		return Photo.builder()
-			.id(dto.galContentId())
+			.contentId(dto.galContentId())
 			.title(dto.galTitle())
 			.imageUrl(dto.galWebImageUrl())
 			.createdTime(LocalDateTimeUtils.toLocalDateTime(dto.galCreatedtime()))
 			.modifiedTime(LocalDateTimeUtils.toLocalDateTime(dto.galModifiedtime()))
-			.month(YearMonth.of(dto.galPhotographyMonth()))
+			.yearMonth(YearMonth.of(dto.galPhotographyMonth()))
 			.location(dto.galPhotographyLocation())
 			.photographer(dto.galPhotographer())
 			.build();
@@ -37,7 +37,7 @@ public class PhotoMapper {
 
 	private static PhotoType buildPhotoType(PhotoFetchResponseDto dto) {
 		return PhotoType.builder()
-			.id(dto.galContentTypeId())
+			.contentTypeId(dto.galContentTypeId())
 			.build();
 	}
 

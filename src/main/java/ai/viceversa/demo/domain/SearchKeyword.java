@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
@@ -19,12 +21,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SearchKeyword {
 	@Id
-	private String id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	private String name;
 
 	@OneToMany(mappedBy = "searchKeyword")
 	private List<PhotoSearchKeyword> searchKeywords = new ArrayList<>();
 
-	public SearchKeyword(String id) {
-		this.id = id;
+	public SearchKeyword(String name) {
+		this.name = name;
 	}
 }

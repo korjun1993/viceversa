@@ -4,8 +4,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -24,14 +27,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Photo {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(optional = false)
+	private Long contentId;
+
+	@ManyToOne(optional = false, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "photo_type_id")
 	private PhotoType photoType;
 
 	@Default
-	@OneToMany(mappedBy = "photo")
+	@OneToMany(mappedBy = "photo", cascade = CascadeType.PERSIST)
 	private List<PhotoSearchKeyword> searchKeywords = new ArrayList<>();
 
 	private String title;
@@ -43,7 +49,7 @@ public class Photo {
 	private LocalDateTime modifiedTime;
 
 	@Embedded
-	private YearMonth month;
+	private YearMonth yearMonth;
 
 	private String location;
 
@@ -60,7 +66,9 @@ public class Photo {
 
 	//== 연관관계 편의메서드 ==//
 	public void addSearchKeyword(final SearchKeyword searchKeyword) {
-		PhotoSearchKeyword photoSearchKeyword = new PhotoSearchKeyword(this, searchKeyword);
+		PhotoSearchKeyword photoSearchKeyword = new PhotoSearchKeyword();
+		photoSearchKeyword.setPhoto(this);
+		photoSearchKeyword.setSearchKeyword(searchKeyword);
 		searchKeywords.remove(photoSearchKeyword);
 		searchKeyword.getSearchKeywords().remove(photoSearchKeyword);
 		searchKeywords.add(photoSearchKeyword);
