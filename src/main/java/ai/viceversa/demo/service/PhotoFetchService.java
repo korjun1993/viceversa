@@ -4,12 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ai.viceversa.demo.api.OpenApiClient;
 import ai.viceversa.demo.dto.PhotoFetchResponseDto;
-import ai.viceversa.demo.extension.ResponseUtils;
+import ai.viceversa.demo.extension.ParsingUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,14 +19,7 @@ public class PhotoFetchService {
 	private final OpenApiClient openApiClient;
 	private final ObjectMapper objectMapper;
 
-	public List<PhotoFetchResponseDto> fetch(int numOfRows, int pageNo) {
-		String body = ResponseUtils.body(openApiClient.getPhotoList(numOfRows, pageNo));
-		try {
-			return objectMapper.readValue(body,
-				objectMapper.getTypeFactory().constructCollectionType(List.class, PhotoFetchResponseDto.class));
-		} catch (JsonProcessingException e) {
-			log.error("Open API 데이터(JSON) → 파싱 오류 발생 = {}", body, e);
-			throw new RuntimeException(e);
-		}
+	public List<PhotoFetchResponseDto> fetchList(int numOfRows, int pageNo) {
+		return ParsingUtils.readValue(objectMapper, openApiClient.getPhotoList(numOfRows, pageNo));
 	}
 }
