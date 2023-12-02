@@ -13,15 +13,16 @@ class YearMonthTest {
 	}
 
 	@Test
-	@DisplayName("연도/월을 표현하는 문자열 중 누락된 것이 있다면 예외가 발생한다")
+	@DisplayName("연도/월을 표현하는 문자열 중 누락된 것이 있다면 null을 반환한다")
 	void test2() {
-		Assertions.assertThatThrownBy(() -> YearMonth.of("2013")).isInstanceOf(RuntimeException.class);
+		YearMonth actual = YearMonth.of("2013");
+		Assertions.assertThat(actual).isNull();
 	}
 
 	@Test
-	@DisplayName("연도/월을 표현하는 문자열에 올바르지 않은 값이 포함된다면 예외가 발생한다")
+	@DisplayName("연도/월을 표현하는 문자열에 올바르지 않은 값이 포함된다면 null을 반환한다")
 	void test3() {
-		Assertions.assertThatThrownBy(() -> YearMonth.of("201377"))
-			.isInstanceOf(IllegalArgumentException.class);
+		YearMonth actual = YearMonth.of("201377");
+		Assertions.assertThat(actual).isNull();
 	}
 }

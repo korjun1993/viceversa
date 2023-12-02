@@ -13,9 +13,9 @@ public class YearMonth {
 	private static final int MONTH_MIN_VALUE = 1;
 	private static final int MONTH_MAX_VALUE = 12;
 
-	private int year;
+	private Integer year;
 
-	private int month;
+	private Integer month;
 
 	public YearMonth(int year, int month) {
 		validate(year, month);
@@ -28,9 +28,13 @@ public class YearMonth {
 	 * @return YearMonth
 	 */
 	public static YearMonth of(String time) {
-		int year = Integer.parseInt(time.substring(0, 4));
-		int month = Integer.parseInt(time.substring(4, 6));
-		return new YearMonth(year, month);
+		try {
+			int year = Integer.parseInt(time.substring(0, 4));
+			int month = Integer.parseInt(time.substring(4, 6));
+			return new YearMonth(year, month);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public static YearMonth of(int year, int month) {
