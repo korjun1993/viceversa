@@ -36,7 +36,7 @@ class PhotoMapperTest {
 		SoftAssertions.assertSoftly(softAssertions -> {
 			softAssertions.assertThat(actual.getContentId()).isEqualTo(3047209L);
 			softAssertions.assertThat(actual.getPhotoType().getContentTypeId()).isEqualTo(17L);
-			softAssertions.assertThat(actual.getTitle()).isEqualTo("서상돈 고택");
+			softAssertions.assertThat(actual.getTitle().getName()).isEqualTo("서상돈 고택");
 			softAssertions.assertThat(actual.getImageUrl())
 				.isEqualTo("http://tong.visitkorea.or.kr/cms2/website/09/3047209.jpg");
 			softAssertions.assertThat(actual.getCreatedTime()).isEqualTo(LocalDateTime.of(2023, 11, 23, 14, 58, 48));
