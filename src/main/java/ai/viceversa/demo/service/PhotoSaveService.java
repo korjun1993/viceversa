@@ -19,11 +19,19 @@ public class PhotoSaveService {
 	private final PhotoFetchService photoFetchService;
 	private final PhotoRepository photoRepository;
 
-	@Transactional
 	public void saveList(int numOfRows, int pageNo) {
-		List<PhotoFetchResponseDto> response;
-		response = photoFetchService.fetchList(numOfRows, pageNo);
-		List<PhotoFetchResponseDto> filtered = filterDuplicateById(response);
+		List<PhotoFetchResponseDto> response = photoFetchService.fetchList(numOfRows, pageNo);
+		saveAllFromDto(response);
+	}
+
+	public void saveDetail(String title, int numOfRows, int pageNo) {
+		List<PhotoFetchResponseDto> response = photoFetchService.fetchDetail(title, numOfRows, pageNo);
+		saveAllFromDto(response);
+	}
+
+	@Transactional
+	public void saveAllFromDto(List<PhotoFetchResponseDto> dto) {
+		List<PhotoFetchResponseDto> filtered = filterDuplicateById(dto);
 		List<Photo> photos = toPhotoList(filtered);
 		photoRepository.saveAll(photos);
 	}
@@ -35,6 +43,6 @@ public class PhotoSaveService {
 	}
 
 	private List<PhotoFetchResponseDto> filterDuplicateById(List<PhotoFetchResponseDto> dto) {
-		return dto.stream().filter(d -> !photoRepository.existsById(d.galContentId())).toList();
+		return dto.stream().filter(d -> !photoRepository.existsByContentId(d.galContentId())).toList();
 	}
 }
