@@ -22,4 +22,8 @@ public class PhotoFetchService {
 	public List<PhotoFetchResponseDto> fetchList(int numOfRows, int pageNo) {
 		return ParsingUtils.readValue(objectMapper, openApiClient.getPhotoList(numOfRows, pageNo));
 	}
+
+	public List<PhotoFetchResponseDto> fetchDetail(String title, int numOfRows, int pageNo) {
+		return ParsingUtils.readValue(objectMapper, openApiClient.getPhotoDetail(title, numOfRows, pageNo));
+	}
 }
