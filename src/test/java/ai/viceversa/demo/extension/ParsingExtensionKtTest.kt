@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 
 class ParsingExtensionKtTest {
     @Test
-    @DisplayName("")
+    @DisplayName("공공 API 호출 결과를 파싱하여 PhotoFetchResponseDto 객체로 파싱할 수 있다")
     fun test1() {
         val data =
             """
@@ -59,5 +59,34 @@ class ParsingExtensionKtTest {
                     .build()
             )
         )
+    }
+
+    @Test
+    @DisplayName("null 데이터를 파싱하면 빈 리스트를 반환한다")
+    fun test2() {
+        val actual = ObjectMapper().readValue(null)
+        Assertions.assertThat(actual).isEqualTo(emptyList<PhotoFetchResponseDto>())
+    }
+
+    @Test
+    @DisplayName("공공 API 호출 결과, Item이 존재하지 않는다면 빈 리스트를 반환한다")
+    fun test3() {
+        val data =
+            """
+            {
+                "response": {
+                    "header": {"resultCode":"0000","resultMsg":"OK"},
+                    "body": {
+                        "items": "",
+                        "numOfRows":10,
+                        "pageNo":1,
+                        "totalCount":5455
+                    }
+                }
+            }
+            """.trimIndent()
+
+        val actual = ObjectMapper().readValue(data)
+        Assertions.assertThat(actual).isEqualTo(emptyList<PhotoFetchResponseDto>())
     }
 }
