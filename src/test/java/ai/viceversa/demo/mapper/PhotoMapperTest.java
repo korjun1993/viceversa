@@ -34,8 +34,8 @@ class PhotoMapperTest {
 
 		// then
 		SoftAssertions.assertSoftly(softAssertions -> {
-			softAssertions.assertThat(actual.getId()).isEqualTo(3047209L);
-			softAssertions.assertThat(actual.getPhotoType().getId()).isEqualTo(17L);
+			softAssertions.assertThat(actual.getContentId()).isEqualTo(3047209L);
+			softAssertions.assertThat(actual.getPhotoType().getContentTypeId()).isEqualTo(17L);
 			softAssertions.assertThat(actual.getTitle()).isEqualTo("서상돈 고택");
 			softAssertions.assertThat(actual.getImageUrl())
 				.isEqualTo("http://tong.visitkorea.or.kr/cms2/website/09/3047209.jpg");
@@ -44,16 +44,16 @@ class PhotoMapperTest {
 			softAssertions.assertThat(actual.getYearMonth()).isEqualTo(YearMonth.of(2023, 10));
 			softAssertions.assertThat(actual.getLocation()).isEqualTo("대구광역시 중구 계산동2가");
 			softAssertions.assertThat(actual.getPhotographer()).isEqualTo("김효서");
-			softAssertions.assertThat(actual.getSearchKeywords().get(0).getSearchKeyword().getId()).isEqualTo("서상돈 고택");
-			softAssertions.assertThat(actual.getSearchKeywords().get(1).getSearchKeyword().getId())
+			softAssertions.assertThat(actual.getSearchKeywords().get(0).getSearchKeyword().getName()).isEqualTo("서상돈 고택");
+			softAssertions.assertThat(actual.getSearchKeywords().get(1).getSearchKeyword().getName())
 				.isEqualTo("대구광역시 중구");
-			softAssertions.assertThat(actual.getSearchKeywords().get(2).getSearchKeyword().getId()).isEqualTo("전통한옥");
-			softAssertions.assertThat(actual.getSearchKeywords().get(3).getSearchKeyword().getId())
+			softAssertions.assertThat(actual.getSearchKeywords().get(2).getSearchKeyword().getName()).isEqualTo("전통한옥");
+			softAssertions.assertThat(actual.getSearchKeywords().get(3).getSearchKeyword().getName())
 				.isEqualTo("대구 근대골목투어");
-			softAssertions.assertThat(actual.getSearchKeywords().get(4).getSearchKeyword().getId())
+			softAssertions.assertThat(actual.getSearchKeywords().get(4).getSearchKeyword().getName())
 				.isEqualTo("대구 중구 근대로의 여행");
-			softAssertions.assertThat(actual.getSearchKeywords().get(5).getSearchKeyword().getId()).isEqualTo("근대문화골목");
-			softAssertions.assertThat(actual.getSearchKeywords().get(6).getSearchKeyword().getId())
+			softAssertions.assertThat(actual.getSearchKeywords().get(5).getSearchKeyword().getName()).isEqualTo("근대문화골목");
+			softAssertions.assertThat(actual.getSearchKeywords().get(6).getSearchKeyword().getName())
 				.isEqualTo("10월 추천여행지");
 		});
 	}
