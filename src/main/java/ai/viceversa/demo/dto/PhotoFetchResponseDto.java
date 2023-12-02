@@ -1,18 +1,13 @@
 package ai.viceversa.demo.dto;
 
+import java.util.List;
+
 import lombok.Builder;
 
 @Builder
 public record PhotoFetchResponseDto(
-	Long galContentId,
-	Long galContentTypeId,
-	String galTitle,
-	String galWebImageUrl,
-	String galCreatedtime,
-	String galModifiedtime,
-	String galPhotographyMonth,
-	String galPhotographyLocation,
-	String galPhotographer,
-	String galSearchKeyword
+	List<ItemDto> items,
+	int totalCount
 ) {
 }
+

@@ -7,13 +7,13 @@ import ai.viceversa.demo.domain.Photo;
 import ai.viceversa.demo.domain.PhotoType;
 import ai.viceversa.demo.domain.SearchKeyword;
 import ai.viceversa.demo.domain.YearMonth;
-import ai.viceversa.demo.dto.PhotoFetchResponseDto;
+import ai.viceversa.demo.dto.ItemDto;
 import ai.viceversa.demo.extension.LocalDateTimeUtils;
 
 public class PhotoMapper {
 	private static final String SEARCH_KEYWORD_DELIMITER = ", ";
 
-	public static Photo toPhoto(PhotoFetchResponseDto dto) {
+	public static Photo toPhoto(ItemDto dto) {
 		Photo photo = buildPhoto(dto);
 		PhotoType photoType = buildPhotoType(dto);
 		List<SearchKeyword> searchKeywords = buildSearchKeyword(dto);
@@ -22,7 +22,7 @@ public class PhotoMapper {
 		return photo;
 	}
 
-	private static Photo buildPhoto(PhotoFetchResponseDto dto) {
+	private static Photo buildPhoto(ItemDto dto) {
 		return Photo.builder()
 			.contentId(dto.galContentId())
 			.title(dto.galTitle())
@@ -35,13 +35,13 @@ public class PhotoMapper {
 			.build();
 	}
 
-	private static PhotoType buildPhotoType(PhotoFetchResponseDto dto) {
+	private static PhotoType buildPhotoType(ItemDto dto) {
 		return PhotoType.builder()
 			.contentTypeId(dto.galContentTypeId())
 			.build();
 	}
 
-	private static List<SearchKeyword> buildSearchKeyword(PhotoFetchResponseDto dto) {
+	private static List<SearchKeyword> buildSearchKeyword(ItemDto dto) {
 		return Arrays.stream(dto.galSearchKeyword().split(SEARCH_KEYWORD_DELIMITER))
 			.map(SearchKeyword::new)
 			.toList();

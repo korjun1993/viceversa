@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ai.viceversa.demo.domain.Photo;
+import ai.viceversa.demo.dto.ItemDto;
 import ai.viceversa.demo.dto.PhotoFetchResponseDto;
 import ai.viceversa.demo.mapper.PhotoMapper;
 import ai.viceversa.demo.repository.PhotoRepository;
@@ -20,29 +21,29 @@ public class PhotoSaveService {
 	private final PhotoRepository photoRepository;
 
 	public void saveList(int numOfRows, int pageNo) {
-		List<PhotoFetchResponseDto> response = photoFetchService.fetchList(numOfRows, pageNo);
-		saveAllFromDto(response);
+		PhotoFetchResponseDto response = photoFetchService.fetchList(numOfRows, pageNo);
+		saveAllFromDto(response.items());
 	}
 
 	public void saveDetail(String title, int numOfRows, int pageNo) {
-		List<PhotoFetchResponseDto> response = photoFetchService.fetchDetail(title, numOfRows, pageNo);
-		saveAllFromDto(response);
+		PhotoFetchResponseDto response = photoFetchService.fetchDetail(title, numOfRows, pageNo);
+		saveAllFromDto(response.items());
 	}
 
 	@Transactional
-	public void saveAllFromDto(List<PhotoFetchResponseDto> dto) {
-		List<PhotoFetchResponseDto> filtered = filterDuplicateById(dto);
+	public void saveAllFromDto(List<ItemDto> dto) {
+		List<ItemDto> filtered = filterDuplicateById(dto);
 		List<Photo> photos = toPhotoList(filtered);
 		photoRepository.saveAll(photos);
 	}
 
-	private List<Photo> toPhotoList(List<PhotoFetchResponseDto> dto) {
+	private List<Photo> toPhotoList(List<ItemDto> dto) {
 		return dto.stream()
 			.map(PhotoMapper::toPhoto)
 			.toList();
 	}
 
-	private List<PhotoFetchResponseDto> filterDuplicateById(List<PhotoFetchResponseDto> dto) {
+	private List<ItemDto> filterDuplicateById(List<ItemDto> dto) {
 		return dto.stream().filter(d -> !photoRepository.existsByContentId(d.galContentId())).toList();
 	}
 }

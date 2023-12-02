@@ -8,15 +8,15 @@ import org.junit.jupiter.api.Test;
 
 import ai.viceversa.demo.domain.Photo;
 import ai.viceversa.demo.domain.YearMonth;
-import ai.viceversa.demo.dto.PhotoFetchResponseDto;
+import ai.viceversa.demo.dto.ItemDto;
 
 class PhotoMapperTest {
 
 	@Test
-	@DisplayName("PhotoFetchResponseDto 로부터 Photo, PhotoType, SearchKeyword 엔티티를 생성하고 연관관계를 맺을 수 있다")
+	@DisplayName("ItemDto 로부터 Photo, PhotoType, SearchKeyword 엔티티를 생성하고 연관관계를 맺을 수 있다")
 	void test1() {
 		// given
-		PhotoFetchResponseDto dto = PhotoFetchResponseDto.builder()
+		ItemDto dto = ItemDto.builder()
 			.galContentId(3047209L)
 			.galContentTypeId(17L)
 			.galTitle("서상돈 고택")

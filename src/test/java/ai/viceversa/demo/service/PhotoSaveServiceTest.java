@@ -31,7 +31,7 @@ class PhotoSaveServiceTest {
 	}
 
 	@Test
-	@DisplayName("오픈 API를 통해 numOfRows 개수만큼 사진 상세 정보를 조회하고 데이터베이스에 저장한다")
+	@DisplayName("오픈 API를 통해 제목으로 사진 상세 정보를 numOfRows 개수만큼 조회하고 데이터베이스에 저장한다")
 	void test2() {
 		sut.saveDetail("이태원거리", 10, 1);
 		List<Photo> actual = photoRepository.findAll();

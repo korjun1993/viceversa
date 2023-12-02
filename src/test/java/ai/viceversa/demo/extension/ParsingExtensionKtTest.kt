@@ -1,5 +1,6 @@
 package ai.viceversa.demo.extension
 
+import ai.viceversa.demo.dto.ItemDto
 import ai.viceversa.demo.dto.PhotoFetchResponseDto
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.assertj.core.api.Assertions
@@ -44,32 +45,37 @@ class ParsingExtensionKtTest {
         val actual = ObjectMapper().readValue(data)
 
         Assertions.assertThat(actual).isEqualTo(
-            listOf(
-                PhotoFetchResponseDto.builder()
-                    .galContentId(1002144)
-                    .galContentTypeId(17)
-                    .galTitle("청설모")
-                    .galWebImageUrl("http://tong.visitkorea.or.kr/cms2/website/44/1002144.jpg")
-                    .galCreatedtime("20100420024817")
-                    .galModifiedtime("20150818231341")
-                    .galPhotographyMonth("201004")
-                    .galPhotographyLocation("서울 경복궁")
-                    .galPhotographer("한국관광공사 김지호")
-                    .galSearchKeyword("청설모, 동물")
-                    .build()
-            )
+            PhotoFetchResponseDto.builder()
+                .items(
+                    listOf(
+                        ItemDto.builder()
+                            .galContentId(1002144)
+                            .galContentTypeId(17)
+                            .galTitle("청설모")
+                            .galWebImageUrl("http://tong.visitkorea.or.kr/cms2/website/44/1002144.jpg")
+                            .galCreatedtime("20100420024817")
+                            .galModifiedtime("20150818231341")
+                            .galPhotographyMonth("201004")
+                            .galPhotographyLocation("서울 경복궁")
+                            .galPhotographer("한국관광공사 김지호")
+                            .galSearchKeyword("청설모, 동물")
+                            .build()
+                    )
+                )
+                .totalCount(5455)
+                .build()
         )
     }
 
     @Test
-    @DisplayName("null 데이터를 파싱하면 빈 리스트를 반환한다")
+    @DisplayName("null 데이터를 파싱하면 null을 반환한다")
     fun test2() {
         val actual = ObjectMapper().readValue(null)
-        Assertions.assertThat(actual).isEqualTo(emptyList<PhotoFetchResponseDto>())
+        Assertions.assertThat(actual).isNull()
     }
 
     @Test
-    @DisplayName("공공 API 호출 결과, Item이 존재하지 않는다면 빈 리스트를 반환한다")
+    @DisplayName("공공 API 호출 결과, Item이 존재하지 않는다면 null을 반환한다")
     fun test3() {
         val data =
             """
@@ -87,6 +93,6 @@ class ParsingExtensionKtTest {
             """.trimIndent()
 
         val actual = ObjectMapper().readValue(data)
-        Assertions.assertThat(actual).isEqualTo(emptyList<PhotoFetchResponseDto>())
+        Assertions.assertThat(actual).isNull()
     }
 }

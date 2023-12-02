@@ -1,7 +1,5 @@
 package ai.viceversa.demo.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,11 +17,11 @@ public class PhotoFetchService {
 	private final OpenApiClient openApiClient;
 	private final ObjectMapper objectMapper;
 
-	public List<PhotoFetchResponseDto> fetchList(int numOfRows, int pageNo) {
+	public PhotoFetchResponseDto fetchList(int numOfRows, int pageNo) {
 		return ParsingUtils.readValue(objectMapper, openApiClient.getPhotoList(numOfRows, pageNo));
 	}
 
-	public List<PhotoFetchResponseDto> fetchDetail(String title, int numOfRows, int pageNo) {
+	public PhotoFetchResponseDto fetchDetail(String title, int numOfRows, int pageNo) {
 		return ParsingUtils.readValue(objectMapper, openApiClient.getPhotoDetail(title, numOfRows, pageNo));
 	}
 }
