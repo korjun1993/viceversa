@@ -37,7 +37,7 @@ public class Photo {
 
 	private Long contentId;
 
-	@ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "photo_type_id")
 	private PhotoType photoType;
 
@@ -45,7 +45,7 @@ public class Photo {
 	@OneToMany(mappedBy = "photo", cascade = CascadeType.PERSIST)
 	private List<PhotoSearchKeyword> searchKeywords = new ArrayList<>();
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "title_id")
 	private Title title;
 
