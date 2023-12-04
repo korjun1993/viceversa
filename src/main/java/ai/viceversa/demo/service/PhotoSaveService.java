@@ -5,10 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ai.viceversa.demo.domain.Photo;
+import ai.viceversa.demo.config.OpenApiFetchProperties;
 import ai.viceversa.demo.dto.ItemDto;
 import ai.viceversa.demo.dto.PhotoFetchResponseDto;
-import ai.viceversa.demo.mapper.PhotoMapper;
 import ai.viceversa.demo.repository.PhotoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,31 +18,30 @@ import lombok.extern.slf4j.Slf4j;
 public class PhotoSaveService {
 	private final PhotoFetchService photoFetchService;
 	private final PhotoRepository photoRepository;
-
-	public void saveList(int numOfRows, int pageNo) {
-		PhotoFetchResponseDto response = photoFetchService.fetchList(numOfRows, pageNo);
-		saveAllFromDto(response.items());
-	}
-
-	public void saveDetail(String title, int numOfRows, int pageNo) {
-		PhotoFetchResponseDto response = photoFetchService.fetchDetail(title, numOfRows, pageNo);
-		saveAllFromDto(response.items());
-	}
+	private final PhotoFactoryService photoFactoryService;
 
 	@Transactional
-	public void saveAllFromDto(List<ItemDto> dto) {
-		List<ItemDto> filtered = filterDuplicateById(dto);
-		List<Photo> photos = toPhotoList(filtered);
-		photoRepository.saveAll(photos);
+	public void saveTitleAndDetails(OpenApiFetchProperties openApiFetchProperties) {
+		List<PhotoFetchResponseDto> photoDetails = photoFetchService.fetchDetailsJoinWithTitles(
+				openApiFetchProperties.titleFetchCount(), 0,
+				openApiFetchProperties.detailFetchCount(), 0)
+			.block();
+
+		if (photoDetails == null || photoDetails.isEmpty()) {
+			log.info("데이터베이스에 저장할 사진 목록이 존재하지 않습니다");
+			return;
+		}
+
+		photoDetails.forEach(this::savePhotoFromPhotoFetchResponseDto);
 	}
 
-	private List<Photo> toPhotoList(List<ItemDto> dto) {
-		return dto.stream()
-			.map(PhotoMapper::toPhoto)
-			.toList();
+	private void savePhotoFromPhotoFetchResponseDto(PhotoFetchResponseDto photoFetchResponseDto) {
+		photoFetchResponseDto.items().forEach(this::savePhotoFromItemDto);
 	}
 
-	private List<ItemDto> filterDuplicateById(List<ItemDto> dto) {
-		return dto.stream().filter(d -> !photoRepository.existsByContentId(d.galContentId())).toList();
+	private void savePhotoFromItemDto(ItemDto itemDto) {
+		if (!photoRepository.existsById(itemDto.galContentId())) {
+			photoRepository.save(photoFactoryService.toPhoto(itemDto));
+		}
 	}
 }

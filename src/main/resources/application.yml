@@ -1,7 +1,12 @@
 openapi:
   secretKey: AdhX8vuZ16gYBNKz1wACLxzXAanfwZHpPKNoJ3n4e7qvEXZxa9XZKH8H4tU6plPJ0DiNEbi9A15W4VZf6pq6lQ==
   dataType: json
-  timeout: 5
+  timeout: 10
+  fetch:
+    disable: false
+    titleFetchCount: 10
+    detailFetchCount: 50
+
 spring:
   jpa:
     hibernate:
