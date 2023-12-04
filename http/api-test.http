@@ -1,0 +1,40 @@
+### 1. 조건 없이 검색
+GET localhost:8080/photos
+Content-Type: application/json
+
+{
+}
+
+### 2. 사진 제목으로 검색
+GET localhost:8080/photos
+Content-Type: application/json
+
+{
+  "photoTitle": "청설모"
+}
+
+### 3. 사진 작가로 검색
+GET localhost:8080/photos
+Content-Type: application/json
+
+{
+  "photographer": "한국관광공사 김지호"
+}
+
+### 4. 키워드로 검색
+GET localhost:8080/photos
+Content-Type: application/json
+
+{
+  "keyword": "동물"
+}
+
+### 5. 복합 조건 검색
+GET localhost:8080/photos
+Content-Type: application/json
+
+{
+  "photographer": "한국관광공사 박성근",
+  "keyword": "대가야왕릉전시관"
+}
+
