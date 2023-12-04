@@ -36,10 +36,11 @@ openapi:
 
 - 방법1) Intellij Run 버튼 클릭 (⭐ 추천)
 - 방법2) 터미널에서 다음 순서대로 입력
-  1. `$ ./gradlew build`
-  2. `$ java -jar build/libs/demo.jar`
+    1. `$ ./gradlew build`
+    2. `$ java -jar build/libs/demo.jar`
 
 3. API 실행
+
 - 방법1) http/api-test.http 실행 (⭐ 추천)
 - 방법2) 포스트맨을 통해 API 테스트
 
@@ -74,6 +75,10 @@ openapi:
 - Spring6에서 제공하는 `Http Interface Client` 선택
     - 이유1 - 인터페이스 형태로 mock 라이브러리 지원 없이 mocking 가능
     - 이유2 - 논블록킹 I/O 지원
+
+### 외부 API 통신 실패시 재시도
+
+- webClient ↔︎ 외부 API 통신이 정상 수행되지 않을 경우, 재시도를 수행하는 filter 추가
 
 ### 외부 API 테스트 mocking
 

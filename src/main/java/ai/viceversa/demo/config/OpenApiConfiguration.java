@@ -14,11 +14,14 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 import ai.viceversa.demo.api.OpenApiClient;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 @Slf4j
 @Configuration
 public class OpenApiConfiguration {
 	private static final String DATA_API_URL = "https://apis.data.go.kr/B551011/PhotoGalleryService1?MobileOS=ETC&MobileApp=TEST&_type={dataType}&&serviceKey={secretKey}";
+	private static final int RETRY_COUNT = 3;
+	private static final int BACKOFF_DELAY_SECONDS = 5;
 
 	@Bean
 	public OpenApiClient photoGalleryHttpApiClient(OpenApiProperties openApiProperties) {
@@ -28,6 +31,7 @@ public class OpenApiConfiguration {
 
 		WebClient webClient = WebClient.builder()
 			.filter(logRequest())
+			.filter(retryFilter())
 			.baseUrl(DATA_API_URL)
 			.defaultUriVariables(defaultUrlVariables)
 			.build();
@@ -47,5 +51,13 @@ public class OpenApiConfiguration {
 			clientRequest.headers().forEach((name, values) -> values.forEach(value -> log.info("{}={}", name, value)));
 			return Mono.just(clientRequest);
 		});
+	}
+
+	private ExchangeFilterFunction retryFilter() {
+		return (request, next) ->
+			next.exchange(request)
+				.retryWhen(
+					Retry.fixedDelay(RETRY_COUNT, Duration.ofSeconds(BACKOFF_DELAY_SECONDS))
+						.doAfterRetry(retrySignal -> log.warn("Retrying")));
 	}
 }
