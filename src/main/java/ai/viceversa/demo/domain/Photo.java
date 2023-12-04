@@ -4,38 +4,32 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Persistable;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SequenceGenerator(
-	name = "PHOTO_SEQ_GENERATOR",
-	sequenceName = "PHOTO_SEQ"
-)
-public class Photo {
+public class Photo extends BaseTimeEntity implements Persistable<Long> {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
-
-	private Long contentId;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "photo_type_id")
@@ -62,6 +56,11 @@ public class Photo {
 
 	private String photographer;
 
+	@Override
+	public boolean isNew() {
+		return getInsertedTime() == null;
+	}
+
 	//== 연관관계 편의 메서드 ==//
 	public void setPhotoType(PhotoType photoType) {
 		if (this.photoType != null) {
@@ -79,7 +78,6 @@ public class Photo {
 		this.title = title;
 	}
 
-	//== 연관관계 편의메서드 ==//
 	public void addSearchKeyword(final SearchKeyword searchKeyword) {
 		PhotoSearchKeyword photoSearchKeyword = new PhotoSearchKeyword();
 		photoSearchKeyword.setPhoto(this);

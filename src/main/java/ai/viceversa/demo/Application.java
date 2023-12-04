@@ -3,17 +3,17 @@ package ai.viceversa.demo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import ai.viceversa.demo.config.OpenApiProperties;
 
+@EnableJpaAuditing
 @SpringBootApplication
 @EnableConfigurationProperties({
 	OpenApiProperties.class,
 })
-public class DemoApplication {
-
+public class Application {
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
-
 }

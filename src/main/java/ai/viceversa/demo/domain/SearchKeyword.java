@@ -3,38 +3,35 @@ package ai.viceversa.demo.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Persistable;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Getter
-@Builder
+@ToString(exclude = "searchKeywords")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SequenceGenerator(
-	name = "SEARCH_KEYWORD_SEQ_GENERATOR",
-	sequenceName = "SEARCH_KEYWORD_SEQ"
-)
-public class SearchKeyword {
+public class SearchKeyword extends BaseTimeEntity implements Persistable<String> {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private Long id;
-
-	private String name;
+	private String id;
 
 	@OneToMany(mappedBy = "searchKeyword")
 	private List<PhotoSearchKeyword> searchKeywords = new ArrayList<>();
 
-	public SearchKeyword(String name) {
-		this.name = name;
+	public SearchKeyword(String id) {
+		this.id = id;
+	}
+
+	@Override
+	public boolean isNew() {
+		return getInsertedTime() == null;
 	}
 }
