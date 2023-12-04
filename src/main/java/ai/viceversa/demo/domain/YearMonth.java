@@ -46,4 +46,9 @@ public class YearMonth {
 			throw new IllegalArgumentException("연도(" + year + "), 월(" + month + ") 의 값에 올바른 값을 입력하세요");
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "" + year + month;
+	}
 }
